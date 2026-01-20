@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Export Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* CSS variables and styles from your original code */
+        :root {
+            --primary: #2563eb; --primary-dark: #1e40af; --secondary: #64748b;
+            --success: #10b981; --danger: #ef4444; --bg-body: #f1f5f9;
+            --bg-white: #ffffff; --text-dark: #1e293b; --text-light: #64748b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1); --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-dark); height: 100vh; overflow: hidden; }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Layout */
+        .top-nav { background: var(--bg-white); height: 70px; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; box-shadow: var(--shadow-sm); z-index: 10; position: relative; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .nav-links a { text-decoration: none; color: var(--text-light); margin-left: 2rem; font-weight: 500; cursor: pointer; }
+        .nav-links a.active-nav { color: var(--primary); }
+        .main-layout { display: flex; height: calc(100vh - 70px); }
+        .sidebar { width: 280px; background: var(--bg-white); padding: 2rem; border-right: 1px solid #e2e8f0; }
+        #main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+        
+        /* Components (Summarized for brevity, keeping your core card/table styles) */
+        .profile-img { width: 80px; height: 80px; background: #e0f2fe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 10px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .card { background: var(--bg-white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; }
+        .card-body { padding: 1.5rem; }
+        .btn-collab { width: 100%; padding: 10px; background: var(--text-dark); color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .table-container { background: white; border-radius: var(--radius); overflow: hidden; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th, .data-table td { padding: 15px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+        
+        /* About Us specifically from your image */
+        .about-grid { display: flex; gap: 20px; }
+        .about-card { flex: 1; background: white; padding: 2rem; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow-sm); }
+        .about-card i { font-size: 2.5rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="logo"><i class="fas fa-cubes"></i> ExportHub</div>
+        <div class="nav-links">
+            <a onclick="showSection('marketplace')" class="active-nav">Marketplace</a>
+            <a onclick="showSection('history')">notification</a>
+            <a onclick="showSection('tracking')">Tracking</a>
+            <a onclick="showSection('about')">About Us</a>
+            <a onclick="logout()" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="main-layout">
+        <aside class="sidebar">
+            <div class="profile-card" style="text-align: center;">
+                <div class="profile-img"><i class="fas fa-user-tie"></i></div>
+                <h3 id="display-username">User</h3>
+                <span style="color:var(--success)">● Online</span>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <div id="view-marketplace" class="fade-in">
+                <h2>Active Export Listings</h2>
+                <div id="marketplace-grid" class="grid-container"></div>
+            </div>
+
+            <div id="view-history" class="hidden fade-in">
+                <h2>Collaboration History</h2>
+                <div class="table-container">
+                    <table class="data-table"><tbody id="history-table-body"></tbody></table>
+                </div>
+            </div>
+
+            <div id="view-tracking" class="hidden fade-in">
+                <h2>Live Shipment Tracking</h2>
+                <div class="table-container">
+                    <table class="data-table"><tbody id="tracking-table-body"></tbody></table>
+                </div>
+            </div>
+
+            <div id="view-about" class="hidden fade-in">
+                <h2 style="text-align:center; margin-bottom: 20px;">Our Strategic Foundation</h2>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <i class="fas fa-star" style="color: #f59e0b;"></i>
+                        <h3>Vision Statement</h3>
+                        <p>To become a trusted digital platform that transforms industrial material transportation by making logistics smarter, faster, transparent, and cost-efficient.</p>
+                    </div>
+                    <div class="about-card">
+                        <i class="fas fa-bullseye" style="color: #ef4444;"></i>
+                        <h3>Mission Statement</h3>
+                        <p>To provide a reliable transportation management platform that enables industries to track materials in real-time and optimize shipping costs.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Data and Logic
+        const marketData = [
+            { id: 1, industry: "TextileCorp", product: "Cotton Fabrics", from: "Jakarta", to: "Singapore", fill: 50, cost: 2000, image: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&q=80" },
+            { id: 2, industry: "AutoParts Ltd", product: "Car Spare Parts", from: "Bandung", to: "Malaysia", fill: 30, cost: 1500, image: "https://images.unsplash.com/photo-1486262715619-72a607e342b1?auto=format&fit=crop&q=80" }
+        ];
+
+        function showSection(name) {
+            ['marketplace', 'history', 'tracking', 'about'].forEach(s => document.getElementById(`view-${s}`).classList.add('hidden'));
+            document.getElementById(`view-${name}`).classList.remove('hidden');
+        }
+
+        function renderMarketplace() {
+            const grid = document.getElementById('marketplace-grid');
+            marketData.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <img src="${item.image}" class="card-img">
+                        <div class="card-body">
+                            <h3>${item.industry}</h3>
+                            <p>${item.from} → ${item.to}</p>
+                            <button class="btn-collab" onclick="alert('Collaboration Requested!')">Request Collaboration</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function logout() { window.location.href = 'index.html'; }
+
+        window.onload = () => {
+            document.getElementById('display-username').innerText = localStorage.getItem('currentUser') || 'Guest';
+            renderMarketplace();
+        };
+    </script>
+</body>
+</html>
